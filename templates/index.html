@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ profile.name }} — {{ profile.role }}</title>
+  <meta name="description" content="{{ profile.summary }}">
+  <meta property="og:title" content="{{ profile.name }} — {{ profile.role }}">
+  <meta property="og:description" content="{{ profile.summary }}">
+  <meta property="og:type" content="website">
+
+  <!-- Preconnect & Natural Modern Typography (Plus Jakarta Sans & JetBrains Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="natural-theme">
+
+  <!-- Clean Top Navigation Bar (matching reference style) -->
+  <header class="site-header" id="site-header">
+    <div class="container nav-wrap">
+      <!-- Brand Wordmark -->
+      <a href="#home" class="brand-link">
+        <span class="brand-title">Sachin Kumar</span>
+      </a>
+
+      <!-- Mobile Navigation Toggle -->
+      <button id="mobile-toggle" class="mobile-toggle" aria-label="Toggle navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <!-- Clean Editorial Navigation Links (no numbers) -->
+      <nav id="nav-menu" class="nav-menu">
+        <ul class="nav-list">
+          <li><a href="#home" class="nav-link active">Home</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#experience" class="nav-link">Experience</a></li>
+          <li><a href="#skills" class="nav-link">Skills</a></li>
+          <li><a href="#projects" class="nav-link">Works</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Direct Phone & Quick Action on Header Right -->
+      <div class="nav-actions">
+        <span class="nav-author-pill">Sachin Kumar</span>
+        <a href="tel:{{ profile.phone }}" class="nav-phone-link mono" title="Direct Phone">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+          <span>{{ profile.phone }}</span>
+        </a>
+        <a href="/resources/Sachin_Kumar_Resume.pdf" target="_blank" download="Sachin_Kumar_Resume.pdf" class="btn btn-outline-pill btn-sm print-hide" title="Download Official Resume PDF">
+          Resume PDF
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- =======================================================================
+         1. HERO SECTION (Mirroring Reference Design Top)
+         ======================================================================= -->
+    <section id="home" class="hero-section">
+      <div class="container hero-container">
+        
+        <!-- Squircle Avatar Container with Official Studio Portrait -->
+        <div class="hero-avatar-row">
+          <div class="hero-squircle-wrap" title="Sachin Kumar — AI/ML Engineer &amp; Data Scientist">
+            <img src="/resources/images/sachin_portrait.png" alt="Sachin Kumar — AI Automation Engineer" class="hero-squircle-img global-user-avatar" id="hero-portrait-img">
+          </div>
+          <div class="hero-avatar-text-block">
+            <div class="hero-status-action-row">
+              <div class="hero-online-status">
+                <span class="status-dot-pulse"></span>
+                <span class="status-dot-text">Available for High-Impact Roles</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distinctive Natural Headline (matching "Hello, my name is Victor Sanchez...") -->
+        <div class="hero-headline-wrap">
+          <h1 class="hero-main-title">
+            Hello, my name is <span class="name-bold">Sachin Kumar</span>.<br>
+            I’m an <span class="highlight-blue">AI Automation Engineer</span>,<br>
+            passionate by intelligent systems.
+          </h1>
+        </div>
+
+        <!-- Pill Action Buttons -->
+        <div class="hero-buttons-row">
+          <a href="#projects" class="btn btn-pill-solid">My Works</a>
+          <a href="#contact" class="btn btn-pill-outline">Contact Me</a>
+        </div>
+
+        <!-- Editorial Ethos Quote & Minimal Social Attribution -->
+        <div class="hero-quote-bar">
+          <div class="quote-text-col">
+            <p class="quote-lead">"The highest leverage of artificial intelligence is not replacing human ingenuity, but automating operational friction."</p>
+          </div>
+          <div class="hero-social-links">
+            <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="GitHub Profile" title="GitHub">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+            </a>
+            <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="LinkedIn Profile" title="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+            <a href="mailto:{{ profile.email }}" class="social-icon-link" aria-label="Email" title="Send Email">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         2. ABOUT ME SECTION (Mirroring Reference Design Block 2)
+         ======================================================================= -->
+    <section id="about" class="about-section">
+      <div class="container about-grid">
+        
+        <!-- Left Column: Large Portrait Frame with Floating CV Banner -->
+        <div class="about-portrait-col">
+          <div class="about-portrait-card" id="about-card-frame">
+            <div class="about-portrait-media-wrap">
+              <img src="/resources/images/sachin_portrait.png" alt="Sachin Kumar — Data Scientist &amp; AI/ML Engineer" class="about-portrait-image global-user-avatar" id="about-portrait-img">
+              <div class="about-badge-overlay">
+                <span class="about-pill-role">AI/ML Engineer</span>
+                <span class="about-pill-spec">Production LLMs &amp; Agents</span>
+              </div>
+            </div>
+            
+            <!-- Floating Banner at bottom -->
+            <div class="cv-floating-banner">
+              <div class="cv-banner-meta">
+                <h4 class="cv-banner-title">Curriculum Vitae</h4>
+                <p class="cv-banner-sub">AI Automation &amp; Enterprise Systems</p>
+              </div>
+              <a href="/resources/Sachin_Kumar_Resume.pdf" target="_blank" download="Sachin_Kumar_Resume.pdf" class="btn btn-pill-solid btn-sm">Download CV</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Heading, Narrative & 4-Stat Metric Grid -->
+        <div class="about-content-col">
+          <h2 class="section-display-heading">About me</h2>
+          
+          <div class="about-narrative-text">
+            <p>
+              I am an AI Automation Engineer and Data Scientist specializing in production-grade LLM applications, multi-agent coordination swarms, and high-throughput predictive telemetry. My technical foundation unites rigorous mathematical statistics and quantitative modeling with modern autonomous systems engineering.
+            </p>
+            <p>
+              At Tata Consultancy Services (TCS), I architect mission-critical infrastructure automation—including the ISAcS zero-touch ITSM incident resolver, predictive time-series outage forecasters, and custom Model Context Protocol (MCP) servers. I focus on reliable, latency-optimized architectures that translate complex AI research into dependable enterprise value.
+            </p>
+          </div>
+
+          <!-- 4-Stat Metrics Grid with Vertical Cyan/Blue Accent Lines (exact match to reference) -->
+          <div class="about-stats-grid">
+            <div class="stat-item">
+              <div class="stat-number">1.8+</div>
+              <div class="stat-label">YEARS IN PRODUCTION AI</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">10+</div>
+              <div class="stat-label">ENTERPRISE WORKFLOWS</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">11+</div>
+              <div class="stat-label">AI / ML REPOSITORIES</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">92%</div>
+              <div class="stat-label">INCIDENT MTTR REDUCTION</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         3. WORK EXPERIENCE SECTION (Standalone Open Production Display)
+         ======================================================================= -->
+    <section id="experience" class="experience-section">
+      <div class="container">
+        
+        <div class="section-center-head">
+          <h2 class="section-display-heading">Work Experience</h2>
+          <p class="section-intro-desc">
+            Production AI engineering, autonomous multi-agent architectures, and predictive telemetry at enterprise scale.
+          </p>
+        </div>
+
+        <div class="experience-standalone-wrap">
+          
+          <!-- TCS Dedicated Company Header Card with Official TCS Logo -->
+          <div class="tcs-company-header-card">
+            <div class="tcs-header-flex">
+              <div class="tcs-branding-col">
+                <div class="tcs-logo-frame">
+                  <img src="/resources/images/tcs_logo.svg" alt="Tata Consultancy Services" class="tcs-logo-img">
+                </div>
+                <div class="tcs-company-meta">
+                  <div class="tcs-badges-line">
+                    <span class="tcs-live-badge">Enterprise Production</span>
+                    <span class="tcs-period-pill">Jan 2025 – Present</span>
+                  </div>
+                  <h3 class="tcs-display-name">Tata Consultancy Services</h3>
+                  <div class="tcs-role-line">
+                    <span class="tcs-primary-role">AI Automation Engineer</span>
+                    <span class="tcs-divider">•</span>
+                    <span class="tcs-location-info">Chennai, India (Full-Time)</span>
+                  </div>
+                </div>
+              </div>
+              <div class="tcs-specializations-col">
+                <span class="tcs-spec-badge spec-cyan">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  Zero-Touch Auto-Resolution
+                </span>
+                <span class="tcs-spec-badge spec-indigo">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  Predictive Outage Telemetry
+                </span>
+                <span class="tcs-spec-badge spec-emerald">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
+                  Event Correlation Swarm
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Label for Production Systems -->
+          <div class="tcs-systems-bar">
+            <h3 class="tcs-systems-title">Core Systems & Production Initiatives</h3>
+            <span class="tcs-systems-subtitle">Active enterprise deployments engineered at TCS</span>
+          </div>
+
+          <!-- Separate Dedicated Production Cards (Visible by Default, No Clicks Needed) -->
+          <div class="tcs-production-cards-grid">
+            {% for exp in experience %}
+              {% for sys in exp.case_studies %}
+              <div class="tcs-production-card" id="tcs-system-{{ loop.index }}">
+                <div class="tcs-card-top">
+                  <span class="tcs-system-tag">{{ sys.tag }}</span>
+                  <span class="tcs-system-id mono">SYS-0{{ loop.index }}</span>
+                </div>
+
+                <h4 class="tcs-system-title">{{ sys.title }}</h4>
+                <p class="tcs-system-headline">{{ sys.headline }}</p>
+
+                <!-- Highlight Metrics -->
+                <div class="tcs-metrics-group">
+                  {% for m in sys.metrics %}
+                  <div class="tcs-metric-cell">
+                    <span class="tcs-metric-val">{{ m.value }}</span>
+                    <span class="tcs-metric-lbl">{{ m.label }}</span>
+                  </div>
+                  {% endfor %}
+                </div>
+
+                <!-- Deep Narrative -->
+                <p class="tcs-system-narrative">{{ sys.narrative }}</p>
+
+                <!-- Architecture Pipeline -->
+                <div class="tcs-pipeline-box">
+                  <span class="tcs-pipeline-heading">Pipeline Architecture:</span>
+                  <ol class="tcs-pipeline-list">
+                    {% for step in sys.architecture_steps %}
+                    <li>{{ step }}</li>
+                    {% endfor %}
+                  </ol>
+                </div>
+
+                <!-- Tech Stack Tags -->
+                <div class="tcs-tech-flow">
+                  {% for tech in sys.stack %}
+                  <span class="tcs-tech-pill">{{ tech }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endfor %}
+            {% endfor %}
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         4. PROFESSIONAL SKILLS SECTION (Mirroring Reference Design Block 4)
+         ======================================================================= -->
+    <section id="skills" class="skills-section">
+      <div class="container">
+        
+        <div class="section-center-head">
+          <h2 class="section-display-heading">Professional Skills</h2>
+          <p class="section-intro-desc">
+            Operational capabilities spanning autonomous multi-agent engineering, deep learning, data systems, and statistical computation.
+          </p>
+        </div>
+
+        <!-- 3-4 Columns with Soft Pastel Circular Icons & Blue Arrow Bullets (exact match to reference) -->
+        <div class="skills-columns-grid">
+          
+          <!-- Column 1: AI & Agentic Systems (Soft Cyan Circle) -->
+          <div class="skill-column-card">
+            <div class="skill-circle-icon icon-cyan">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                <circle cx="12" cy="5" r="2"></circle>
+                <path d="M12 7v4"></path>
+                <line x1="8" y1="16" x2="8" y2="16"></line>
+                <line x1="16" y1="16" x2="16" y2="16"></line>
+              </svg>
+            </div>
+            <h3 class="skill-column-title">AI & Agentic Systems</h3>
+            <p class="skill-column-desc">
+              Designing stateful autonomous swarms, custom Model Context Protocol tools, and hybrid retrieval systems for production environments.
+            </p>
+            <ul class="skill-arrow-list">
+              <li><span class="blue-arrow">→</span> LangGraph & Multi-Agent Swarms</li>
+              <li><span class="blue-arrow">→</span> Model Context Protocol (MCP)</li>
+              <li><span class="blue-arrow">→</span> Hybrid FAISS & BM25 RAG</li>
+              <li><span class="blue-arrow">→</span> CrewAI & Agno Frameworks</li>
+              <li><span class="blue-arrow">→</span> Fast Ground-Truth Benchmarks</li>
+            </ul>
+          </div>
+
+          <!-- Column 2: Machine Learning & CV (Soft Purple Circle) -->
+          <div class="skill-column-card">
+            <div class="skill-circle-icon icon-purple">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+            </div>
+            <h3 class="skill-column-title">Machine Learning & CV</h3>
+            <p class="skill-column-desc">
+              Supervised gradient boosting, deep convolutional networks for image diagnostics, and unsupervised topological clustering.
+            </p>
+            <ul class="skill-arrow-list">
+              <li><span class="blue-arrow">→</span> Deep CNNs (TensorFlow / Keras)</li>
+              <li><span class="blue-arrow">→</span> Gradient Boosting (XGBoost)</li>
+              <li><span class="blue-arrow">→</span> Scikit-Learn Pipelines & Tuning</li>
+              <li><span class="blue-arrow">→</span> Unsupervised Event Correlation</li>
+              <li><span class="blue-arrow">→</span> Transfer Learning Architectures</li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Cloud & Data Engineering (Soft Teal Circle) -->
+          <div class="skill-column-card">
+            <div class="skill-circle-icon icon-teal">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+              </svg>
+            </div>
+            <h3 class="skill-column-title">Cloud & Data Systems</h3>
+            <p class="skill-column-desc">
+              Containerized microservices on Google Cloud and Azure, event-driven message brokers, and optimized relational query engines.
+            </p>
+            <ul class="skill-arrow-list">
+              <li><span class="blue-arrow">→</span> Google Cloud (Cloud Run, Pub/Sub)</li>
+              <li><span class="blue-arrow">→</span> Docker & Container Workflows</li>
+              <li><span class="blue-arrow">→</span> Relational SQL & PostgreSQL</li>
+              <li><span class="blue-arrow">→</span> Microsoft Azure AI Services</li>
+              <li><span class="blue-arrow">→</span> FastAPI Microservices & CI/CD</li>
+            </ul>
+          </div>
+
+          <!-- Column 4: Statistical Analysis (Soft Amber Circle) -->
+          <div class="skill-column-card">
+            <div class="skill-circle-icon icon-amber">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </div>
+            <h3 class="skill-column-title">Statistical Analysis</h3>
+            <p class="skill-column-desc">
+              Mathematical modeling grounded in M.Sc. Statistics: LOESS decomposition, multivariate regression, and anomaly detection.
+            </p>
+            <ul class="skill-arrow-list">
+              <li><span class="blue-arrow">→</span> MSTL Seasonality Modeling</li>
+              <li><span class="blue-arrow">→</span> Multivariate Time-Series Forecasting</li>
+              <li><span class="blue-arrow">→</span> Hypothesis Testing & Inference</li>
+              <li><span class="blue-arrow">→</span> Dynamic Outlier & Anomaly Gates</li>
+              <li><span class="blue-arrow">→</span> Power BI & Exploratory Modeling</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Verified Certifications Bar -->
+        <div class="skills-certifications-bar">
+          <div class="cert-bar-title">Industry Certifications & Credentials:</div>
+          <div class="cert-badges-flow">
+            {% for cert in skills.certifications %}
+            <div class="cert-pill-badge">
+              <span class="cert-bullet">✓</span>
+              <span class="cert-name"><strong>{{ cert.title }}</strong></span>
+              <span class="cert-issuer">({{ cert.issuer }})</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         5. RECENT WORKS SECTION (Mirroring Reference Design Block 5)
+         ======================================================================= -->
+    <section id="projects" class="projects-section">
+      <div class="container">
+        
+        <div class="section-center-head">
+          <h2 class="section-display-heading">Recent Works</h2>
+          <p class="section-intro-desc">
+            A curated portfolio of distributed multi-agent systems, custom MCP servers, computer vision models, and predictive pipelines.
+          </p>
+        </div>
+
+        <!-- Clean Category Filter Pills -->
+        <div class="works-filter-pills">
+          {% for cat in categories %}
+          <button class="filter-pill-btn {% if cat == 'All' %}active{% endif %}" data-category="{{ cat }}">
+            {{ cat }}
+          </button>
+          {% endfor %}
+        </div>
+
+        <!-- Projects Grid with Clean Natural Cards -->
+        <div class="projects-grid" id="projects-grid">
+          {% for proj in projects %}
+          <article class="work-card" data-category="{{ proj.category }}">
+            
+            <!-- Clean Image Banner with Category Badge -->
+            <div class="work-img-container">
+              <img src="{{ proj.image_url }}" alt="{{ proj.title }}" class="work-card-image" loading="lazy" referrerPolicy="no-referrer" onerror="handleProjectImageError(this, '{{ proj.category }}')">
+              <span class="work-category-chip">{{ proj.category }}</span>
+            </div>
+
+            <!-- Card Body -->
+            <div class="work-card-content">
+              <h3 class="work-card-title">{{ proj.title }}</h3>
+              <p class="work-card-description">{{ proj.description }}</p>
+
+              <div class="work-tech-pills">
+                {% for tag in proj.tech_stack.slice(0, 4) %}
+                <span class="tech-chip">{{ tag }}</span>
+                {% endfor %}
+                {% if proj.tech_stack.length > 4 %}
+                <span class="tech-chip chip-more">+{{ proj.tech_stack.length - 4 }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Card Footer Action Buttons -->
+            <div class="work-card-actions">
+              <button onclick="openProjectModal('{{ proj.id }}')" class="btn btn-pill-solid btn-sm">
+                Architecture
+              </button>
+              <a href="{{ proj.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-pill-outline btn-sm" title="View Source Code">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+                GitHub
+              </a>
+            </div>
+
+          </article>
+          {% endfor %}
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         6. CONTACT ME SECTION (Mirroring Reference Design Bottom)
+         ======================================================================= -->
+    <section id="contact" class="contact-section">
+      <div class="container contact-container">
+        
+        <!-- Centered Avatar Photo (matching reference) -->
+        <div class="contact-avatar-center">
+          <img src="/resources/images/sachin_portrait.png" alt="Sachin Kumar" class="contact-circle-avatar global-user-avatar" referrerPolicy="no-referrer">
+        </div>
+
+        <h2 class="contact-main-heading">Contact Me</h2>
+        <p class="contact-sub-text">Have a project, engineering role, or collaboration in mind? Feel free to reach out.</p>
+
+        <!-- Clean Minimal Underline-Based Form (matching reference) -->
+        <form id="contact-form" class="natural-contact-form">
+          
+          <div class="clean-form-field">
+            <label for="contact-name" class="clean-field-label">FULL NAME</label>
+            <input type="text" id="contact-name" class="clean-field-input" required placeholder="Enter your name">
+          </div>
+
+          <div class="clean-form-field">
+            <label for="contact-email" class="clean-field-label">E-MAIL</label>
+            <input type="email" id="contact-email" class="clean-field-input" required placeholder="Enter your email address">
+          </div>
+
+          <div class="clean-form-field">
+            <label for="contact-phone" class="clean-field-label">PHONE NUMBER</label>
+            <input type="tel" id="contact-phone" class="clean-field-input" placeholder="Enter your phone number">
+          </div>
+
+          <div class="clean-form-field">
+            <label for="contact-message" class="clean-field-label">YOUR MESSAGE</label>
+            <textarea id="contact-message" class="clean-field-textarea" required rows="3" placeholder="Enter your message"></textarea>
+          </div>
+
+          <!-- Centered Action Buttons (Submit + Call Request) -->
+          <div class="contact-actions-center">
+            <button type="submit" class="btn btn-pill-solid">Submit</button>
+            <a href="tel:{{ profile.phone }}" class="btn btn-pill-outline">Call Request</a>
+          </div>
+
+          <div id="form-status" class="form-status"></div>
+        </form>
+
+        <!-- Direct Coordinates Footer Row -->
+        <div class="contact-direct-strip">
+          <div class="direct-item" onclick="copyToClipboard('{{ profile.email }}', 'Email')">
+            <span class="direct-label">Email:</span>
+            <span class="direct-val">{{ profile.email }}</span>
+          </div>
+          <div class="direct-item" onclick="copyToClipboard('{{ profile.phone }}', 'Phone')">
+            <span class="direct-label">Phone:</span>
+            <span class="direct-val">{{ profile.phone }}</span>
+          </div>
+          <div class="direct-item">
+            <span class="direct-label">Location:</span>
+            <span class="direct-val">{{ profile.location }}</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Clean Project Architecture Modal -->
+  <div id="project-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-project-title">
+    <div class="modal-dialog">
+      <button class="modal-close" onclick="closeProjectModal()" aria-label="Close dialog">&times;</button>
+      <div id="modal-project-category" class="modal-category-pill"></div>
+      <h2 id="modal-project-title" class="modal-heading"></h2>
+      <p id="modal-project-desc" class="modal-description"></p>
+
+      <div class="modal-section-block">
+        <h4 class="modal-block-heading">Technical Highlights & Implementation:</h4>
+        <ul id="modal-project-highlights" class="modal-bullet-list"></ul>
+      </div>
+
+      <div class="modal-section-block">
+        <h4 class="modal-block-heading">Technologies Employed:</h4>
+        <div id="modal-project-tags" class="modal-tags-flow"></div>
+      </div>
+
+      <div class="modal-actions-row">
+        <button onclick="closeProjectModal()" class="btn btn-pill-outline btn-sm">Close</button>
+        <a id="modal-project-repo" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-pill-solid btn-sm">
+          Open Repository on GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Clean Natural Footer (matching reference bottom bar) -->
+  <footer class="site-footer">
+    <div class="container footer-content-wrap">
+      
+      <div class="footer-left">
+        <span class="footer-brand">Sachin Kumar</span>
+        <span class="footer-copy">@2026 Sachin Kumar. All Rights Reserved.</span>
+      </div>
+
+      <div class="footer-center-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Works</a>
+        <a href="#contact">Contact</a>
+        <a href="/resources/Sachin_Kumar_Resume.pdf" target="_blank" download="Sachin_Kumar_Resume.pdf">Resume PDF</a>
+      </div>
+
+      <div class="footer-right-socials">
+        <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 240" width="100%" height="100%">
+  <!-- Deep Solid Black Background Matching Attached Reference -->
+  <rect width="540" height="240" rx="16" fill="#000000"/>
+  
+  <!-- Content Group centered -->
+  <g transform="translate(60, 50)">
+    
+    <!-- Stylized 'tcs' ribbon mark (White on Black) -->
+    <g transform="translate(0, 8)" fill="none" stroke="#ffffff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+      <!-- 't' glyph: vertical stem with top curve and crossbar -->
+      <path d="M 28 32 L 28 88 C 28 102 38 108 52 108 C 62 108 70 104 74 100" />
+      <path d="M 12 50 L 52 50" />
+      
+      <!-- 'c' and 's' continuous flowing ribbon path -->
+      <!-- 'c' top curve down to connecting loop -->
+      <path d="M 148 58 C 142 46 128 38 112 38 C 90 38 76 56 76 78 C 76 100 90 118 114 118 C 132 118 144 110 152 98" />
+      
+      <!-- 's' ribbon looping seamlessly from the bottom flow -->
+      <path d="M 148 104 C 158 114 172 120 188 120 C 206 120 220 110 220 94 C 220 74 196 68 180 62 C 164 56 156 48 156 38 C 156 24 168 14 186 14 C 200 14 214 20 222 30" />
+      <!-- Top entry loop flourish matching TCS ribbon aesthetic -->
+      <path d="M 178 62 C 196 68 220 76 220 94 C 220 110 206 120 188 120 C 172 120 158 112 150 96 C 144 80 144 60 156 38 C 162 26 172 18 186 18 C 202 18 216 26 222 36" />
+    </g>
+
+    <!-- Divider Bar -->
+    <line x1="248" y1="28" x2="248" y2="124" stroke="#334155" stroke-width="1.5" stroke-opacity="0.4"/>
+
+    <!-- TATA CONSULTANCY SERVICES Text Block in Exact Crisp Modern Lettering -->
+    <g transform="translate(270, 24)">
+      <!-- TATA -->
+      <text x="0" y="34" font-family="'Plus Jakarta Sans', 'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="34" fill="#ffffff" letter-spacing="0.08em">TATA</text>
+      
+      <!-- CONSULTANCY -->
+      <text x="0" y="66" font-family="'Plus Jakarta Sans', 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="20" fill="#ffffff" letter-spacing="0.12em">CONSULTANCY</text>
+      
+      <!-- SERVICES -->
+      <text x="0" y="94" font-family="'Plus Jakarta Sans', 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="20" fill="#ffffff" letter-spacing="0.12em">SERVICES</text>
+    </g>
+
+  </g>
+</svg>

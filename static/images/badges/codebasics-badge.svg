@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2d135c"/>
+      <stop offset="50%" stop-color="#3d1c7d"/>
+      <stop offset="100%" stop-color="#1b0838"/>
+    </linearGradient>
+
+    <!-- Border Accent Gradient -->
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="40%" stop-color="#60A5FA"/>
+      <stop offset="70%" stop-color="#D7EF3F"/>
+      <stop offset="100%" stop-color="#A3E635"/>
+    </linearGradient>
+
+    <!-- Lime Glow Gradient -->
+    <linearGradient id="limeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D7EF3F"/>
+      <stop offset="100%" stop-color="#A3E635"/>
+    </linearGradient>
+
+    <!-- Blue Glow Gradient -->
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+
+    <filter id="innerGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Outer Ring with Gradient -->
+  <circle cx="300" cy="300" r="275" fill="none" stroke="url(#ringGrad)" stroke-width="8" filter="url(#shadow)"/>
+  <circle cx="300" cy="300" r="260" fill="url(#bgGrad)" stroke="#4c279a" stroke-width="3"/>
+  <circle cx="300" cy="300" r="248" fill="none" stroke="#60A5FA" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.6"/>
+
+  <!-- Subtle concentric decorative ring -->
+  <circle cx="300" cy="300" r="225" fill="#240c4a" stroke="rgba(215, 239, 63, 0.25)" stroke-width="2"/>
+
+  <!-- Top Curved Arc for CODEBASICS.IO -->
+  <path id="textArcTop" d="M 120 300 A 180 180 0 0 1 480 300" fill="none"/>
+  <text fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="28" letter-spacing="7">
+    <textPath href="#textArcTop" startOffset="50%" text-anchor="middle">
+      CODEBASICS.IO
+    </textPath>
+  </text>
+
+  <!-- Center Decorative Shield/Plate -->
+  <g transform="translate(300, 290)">
+    <!-- Central hexagonal background -->
+    <polygon points="0,-90 78,-45 78,45 0,90 -78,45 -78,-45" fill="#180731" stroke="url(#ringGrad)" stroke-width="4" filter="url(#shadow)"/>
+    
+    <!-- Code Bracket Left: < -->
+    <path d="M -26 -35 L -52 0 L -26 35" fill="none" stroke="#3B82F6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Code Bracket Right: > -->
+    <path d="M 26 -35 L 52 0 L 26 35" fill="none" stroke="#D7EF3F" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Center Slash / Node Network: / -->
+    <line x1="-10" y1="36" x2="10" y2="-36" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+    
+    <!-- Small glowing data nodes -->
+    <circle cx="-39" cy="0" r="5" fill="#D7EF3F"/>
+    <circle cx="39" cy="0" r="5" fill="#3B82F6"/>
+    <circle cx="0" cy="0" r="6" fill="#ffffff"/>
+  </g>
+
+  <!-- Subtitle Tag: DATA SCIENCE & AI -->
+  <rect x="170" y="405" width="260" height="34" rx="17" fill="url(#limeGrad)" filter="url(#shadow)"/>
+  <text x="300" y="428" fill="#1b0838" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="16" letter-spacing="2" text-anchor="middle">
+    DATA SCIENCE &amp; ML
+  </text>
+
+  <!-- Bottom Curved Arc for CERTIFIED -->
+  <path id="textArcBottom" d="M 140 330 A 185 185 0 0 0 460 330" fill="none"/>
+  <text fill="#60A5FA" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="24" letter-spacing="9">
+    <textPath href="#textArcBottom" startOffset="50%" text-anchor="middle">
+      CERTIFIED
+    </textPath>
+  </text>
+
+  <!-- 3 Stars at the very bottom -->
+  <g fill="#D7EF3F" transform="translate(300, 520)">
+    <!-- Center star -->
+    <polygon points="0,-12 3.5,-3.5 12,-3.5 5,2 8,11 0,6 -8,11 -5,2 -12,-3.5 -3.5,-3.5"/>
+    <!-- Left star -->
+    <polygon points="-32,-8 -29,-2 -22,-2 -27,2 -25,9 -32,5 -39,9 -37,2 -42,-2 -35,-2"/>
+    <!-- Right star -->
+    <polygon points="32,-8 35,-2 42,-2 37,2 39,9 32,5 25,9 27,2 22,-2 29,-2"/>
+  </g>
+</svg>

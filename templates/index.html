@@ -42,22 +42,24 @@
           <li><a href="#about" class="nav-link">About</a></li>
           <li><a href="#experience" class="nav-link">Experience</a></li>
           <li><a href="#skills" class="nav-link">Skills</a></li>
+          <li><a href="#certifications" class="nav-link">Certifications</a></li>
           <li><a href="#projects" class="nav-link">Works</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
       </nav>
 
-      <!-- Direct Phone & Quick Action on Header Right -->
+      <!-- Quick Resume Action on Header Right -->
       <div class="nav-actions">
-        <span class="nav-author-pill">Sachin Kumar</span>
-        <a href="tel:{{ profile.phone }}" class="nav-phone-link mono" title="Direct Phone">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        <a href="/download-resume" target="_blank" download="Sachin_Kumar_Resume.pdf" class="btn btn-pill-solid btn-sm print-hide" title="Download Resume PDF directly">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
           </svg>
-          <span>{{ profile.phone }}</span>
+          <span>Download CV</span>
         </a>
-        <a href="/resources/Sachin_Kumar_Resume.pdf" target="_blank" download="Sachin_Kumar_Resume.pdf" class="btn btn-outline-pill btn-sm print-hide" title="Download Official Resume PDF">
-          Resume PDF
+        <a href="/view-resume" target="_blank" rel="noopener noreferrer" class="btn btn-pill-outline btn-sm print-hide" title="View PDF directly in browser">
+          <span>View PDF</span>
         </a>
       </div>
     </div>
@@ -97,7 +99,7 @@
         <!-- Pill Action Buttons -->
         <div class="hero-buttons-row">
           <a href="#projects" class="btn btn-pill-solid">My Works</a>
-          <a href="#contact" class="btn btn-pill-outline">Contact Me</a>
+          <a href="#contact" class="btn btn-pill-outline">Get in Touch</a>
         </div>
 
         <!-- Editorial Ethos Quote & Minimal Social Attribution -->
@@ -151,7 +153,10 @@
                 <h4 class="cv-banner-title">Curriculum Vitae</h4>
                 <p class="cv-banner-sub">AI Automation &amp; Enterprise Systems</p>
               </div>
-              <a href="/resources/Sachin_Kumar_Resume.pdf" target="_blank" download="Sachin_Kumar_Resume.pdf" class="btn btn-pill-solid btn-sm">Download CV</a>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <a href="/download-resume" target="_blank" download="Sachin_Kumar_Resume.pdf" class="btn btn-pill-solid btn-sm" title="Download Resume PDF directly">Download CV</a>
+                <a href="/view-resume" target="_blank" rel="noopener noreferrer" class="btn btn-pill-outline btn-sm" title="View PDF directly in browser">View PDF</a>
+              </div>
             </div>
           </div>
         </div>
@@ -409,18 +414,169 @@
 
         </div>
 
-        <!-- Verified Certifications Bar -->
+        <!-- Verified Certifications Teaser Banner -->
         <div class="skills-certifications-bar">
-          <div class="cert-bar-title">Industry Certifications & Credentials:</div>
-          <div class="cert-badges-flow">
-            {% for cert in skills.certifications %}
-            <div class="cert-pill-badge">
-              <span class="cert-bullet">✓</span>
-              <span class="cert-name"><strong>{{ cert.title }}</strong></span>
-              <span class="cert-issuer">({{ cert.issuer }})</span>
-            </div>
-            {% endfor %}
+          <div class="cert-bar-left">
+            <div class="cert-bar-title">7 Verified Industry Certifications & Credentials</div>
+            <p class="cert-bar-sub">Microsoft Azure (AI-102 & AI-900), Google Cloud (ACE), Anthropic Claude, IBM & DeepLearning.AI</p>
           </div>
+          <a href="#certifications" class="btn btn-pill-solid btn-sm">
+            <span>View All Badges</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         4.5. VERIFIED INDUSTRY CERTIFICATIONS (Dedicated Real Badges Showcase)
+         ======================================================================= -->
+    <section id="certifications" class="certifications-section">
+      <div class="container">
+        
+        <div class="section-center-head">
+          <div class="section-kicker-tag">Industry Credentials</div>
+          <h2 class="section-display-heading">Official Certifications &amp; Badges</h2>
+          <p class="section-intro-desc">
+            Authentic, verified professional credentials from Google Cloud, Anthropic Claude, Microsoft Learn, IBM, and Codebasics.io. Click any card to flip and view the full competency explanation.
+          </p>
+        </div>
+
+        <!-- Issuer Filter Pills -->
+        <div class="cert-filter-pills" id="cert-filter-pills">
+          <button class="cert-filter-btn active" data-issuer="all">All Badges ({{ skills.certifications.length }})</button>
+          <button class="cert-filter-btn" data-issuer="Google Cloud">Google Cloud (1)</button>
+          <button class="cert-filter-btn" data-issuer="Anthropic">Anthropic (2)</button>
+          <button class="cert-filter-btn" data-issuer="Microsoft">Microsoft Azure (2)</button>
+          <button class="cert-filter-btn" data-issuer="IBM">IBM (1)</button>
+          <button class="cert-filter-btn" data-issuer="Codebasics">Codebasics.io (1)</button>
+        </div>
+
+        <!-- Badges Showcase Grid (Interactive Flip Cards) -->
+        <div class="cert-cards-grid" id="cert-cards-grid">
+          {% for cert in skills.certifications %}
+          <article class="cert-card cert-flip-card" data-issuer="{{ cert.issuer_group }}" id="{{ cert.id }}" onclick="handleCertCardClick(this, event)" role="button" tabindex="0" title="Click card to flip and view explanation">
+            <div class="cert-card-inner">
+              <!-- FRONT OF CARD: Badge, Name, Status, and Credential Link -->
+              <div class="cert-face cert-front">
+                <div class="cert-front-top">
+                  <span class="cert-issuer-badge issuer-{{ cert.issuer_group | lower | replace('.', '-') }}">{{ cert.issuer }}</span>
+                  {% if cert.in_progress %}
+                  <span class="cert-status-progress" title="Certification Currently In Progress">
+                    <span class="pulse-dot"></span>
+                    <span>In Progress</span>
+                  </span>
+                  {% else %}
+                  <span class="cert-status-verified" title="Official Verified Digital Credential">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                      <polyline points="9 11 12 14 22 4"></polyline>
+                    </svg>
+                    <span>Verified</span>
+                  </span>
+                  {% endif %}
+                </div>
+
+                <div class="cert-front-badge-area">
+                  <div class="cert-front-badge-frame">
+                    <img src="{{ cert.badge_image }}" 
+                         alt="{{ cert.title }} Badge" 
+                         class="cert-real-badge" 
+                         loading="lazy" 
+                         referrerPolicy="no-referrer"
+                         onerror="this.onerror=null; this.src='/static/images/badges/codebasics-badge.svg';">
+                  </div>
+                </div>
+
+                <div class="cert-front-info">
+                  <div class="cert-code-row">
+                    <span class="cert-code-tag mono">{{ cert.code }}</span>
+                    <span class="cert-category-tag">{{ cert.category }}</span>
+                  </div>
+                  <h3 class="cert-front-title">{{ cert.title }}</h3>
+                </div>
+
+                <div class="cert-front-footer">
+                  <a href="{{ cert.verify_url }}" 
+                     target="_blank" 
+                     rel="noopener noreferrer" 
+                     class="btn btn-pill-solid btn-xs cert-verify-btn" 
+                     title="Open official credential on registry"
+                     onclick="event.stopPropagation();">
+                    <span>{% if cert.in_progress %}Exam Overview{% else %}Verify Credential{% endif %}</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                  </a>
+
+                  <button type="button" class="cert-flip-trigger" title="Flip to see curriculum & explanation" onclick="event.stopPropagation(); flipCertCard(this.closest('.cert-flip-card'));">
+                    <span>Details</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- BACK OF CARD: Full Explanation & Validated Competencies -->
+              <div class="cert-face cert-back">
+                <div class="cert-back-top">
+                  <div class="cert-back-header-meta">
+                    <span class="cert-issuer-badge issuer-{{ cert.issuer_group | lower | replace('.', '-') }}">{{ cert.issuer }}</span>
+                    <span class="cert-code-tag mono">{{ cert.code }}</span>
+                  </div>
+                  <button type="button" class="cert-flip-back-btn" title="Flip back to front" onclick="event.stopPropagation(); flipCertCard(this.closest('.cert-flip-card'));">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    <span>Back</span>
+                  </button>
+                </div>
+
+                <div class="cert-back-body">
+                  <h4 class="cert-back-title">{{ cert.title }}</h4>
+                  <div class="cert-back-explanation-box">
+                    <span class="cert-back-section-label">Explanation &amp; Focus</span>
+                    <p class="cert-back-desc">{{ cert.description }}</p>
+                  </div>
+
+                  <div class="cert-back-skills-box">
+                    <span class="cert-back-section-label">Validated Competencies</span>
+                    <div class="cert-skills-wrap">
+                      {% for sk in cert.skills %}
+                      <span class="cert-skill-tag">{{ sk }}</span>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cert-back-footer">
+                  <button type="button" class="btn btn-pill-outline btn-xs" onclick="event.stopPropagation(); flipCertCard(this.closest('.cert-flip-card'));">
+                    <span>↻ Show Badge</span>
+                  </button>
+                  <a href="{{ cert.verify_url }}" 
+                     target="_blank" 
+                     rel="noopener noreferrer" 
+                     class="btn btn-pill-solid btn-xs"
+                     onclick="event.stopPropagation();">
+                    <span>{% if cert.in_progress %}Exam Overview{% else %}Verify Credential{% endif %}</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
         </div>
 
       </div>
@@ -495,64 +651,144 @@
     </section>
 
     <!-- =======================================================================
-         6. CONTACT ME SECTION (Mirroring Reference Design Bottom)
+         6. CONTACT / GET IN TOUCH SECTION
          ======================================================================= -->
     <section id="contact" class="contact-section">
       <div class="container contact-container">
         
-        <!-- Centered Avatar Photo (matching reference) -->
+        <!-- Centered Profile Avatar -->
         <div class="contact-avatar-center">
           <img src="/resources/images/sachin_portrait.png" alt="Sachin Kumar" class="contact-circle-avatar global-user-avatar" referrerPolicy="no-referrer">
         </div>
 
-        <h2 class="contact-main-heading">Contact Me</h2>
-        <p class="contact-sub-text">Have a project, engineering role, or collaboration in mind? Feel free to reach out.</p>
+        <h2 class="contact-main-heading">Get in Touch</h2>
+        <p class="contact-sub-text">Open to opportunities in Production LLMs, Multi-Agent Systems, and AI/ML Engineering. Feel free to connect directly through any channel below.</p>
 
-        <!-- Clean Minimal Underline-Based Form (matching reference) -->
-        <form id="contact-form" class="natural-contact-form">
+        <!-- 4-Card Contact Grid: Email, Phone, GitHub, LinkedIn -->
+        <div class="contact-grid">
           
-          <div class="clean-form-field">
-            <label for="contact-name" class="clean-field-label">FULL NAME</label>
-            <input type="text" id="contact-name" class="clean-field-input" required placeholder="Enter your name">
+          <!-- 1. Email Address -->
+          <div class="contact-card">
+            <div class="contact-card-top-row">
+              <div class="contact-card-icon contact-icon-mail" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </div>
+              <div class="contact-card-info">
+                <span class="contact-card-label">EMAIL ADDRESS</span>
+                <a href="mailto:{{ profile.email }}" class="contact-card-val" title="Click to send email">
+                  {{ profile.email }}
+                </a>
+              </div>
+            </div>
+            <div class="contact-card-actions">
+              <a href="mailto:{{ profile.email }}" class="contact-action-btn" title="Compose Email">
+                <span>Write Mail</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+              <button type="button" onclick="copyToClipboard('{{ profile.email }}', 'Email address')" class="contact-copy-btn" title="Copy email address">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy</span>
+              </button>
+            </div>
           </div>
 
-          <div class="clean-form-field">
-            <label for="contact-email" class="clean-field-label">E-MAIL</label>
-            <input type="email" id="contact-email" class="clean-field-input" required placeholder="Enter your email address">
+          <!-- 2. Phone / WhatsApp -->
+          <div class="contact-card">
+            <div class="contact-card-top-row">
+              <div class="contact-card-icon contact-icon-phone" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+              </div>
+              <div class="contact-card-info">
+                <span class="contact-card-label">PHONE &amp; WHATSAPP</span>
+                <a href="tel:{{ profile.phone }}" class="contact-card-val" title="Click to call">
+                  {{ profile.phone }}
+                </a>
+              </div>
+            </div>
+            <div class="contact-card-actions">
+              <a href="https://wa.me/919840978758" target="_blank" rel="noopener noreferrer" class="contact-action-btn contact-btn-wa" title="Open WhatsApp chat">
+                <span>WhatsApp</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+              <button type="button" onclick="copyToClipboard('{{ profile.phone }}', 'Phone number')" class="contact-copy-btn" title="Copy phone number">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy</span>
+              </button>
+            </div>
           </div>
 
-          <div class="clean-form-field">
-            <label for="contact-phone" class="clean-field-label">PHONE NUMBER</label>
-            <input type="tel" id="contact-phone" class="clean-field-input" placeholder="Enter your phone number">
+          <!-- 3. GitHub Repositories -->
+          <div class="contact-card">
+            <div class="contact-card-top-row">
+              <div class="contact-card-icon contact-icon-github" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+              </div>
+              <div class="contact-card-info">
+                <span class="contact-card-label">GITHUB REPOSITORIES</span>
+                <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" class="contact-card-val" title="Open GitHub Profile">
+                  github.com/sachink1712
+                </a>
+              </div>
+            </div>
+            <div class="contact-card-actions">
+              <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" class="contact-action-btn" title="View GitHub Repositories">
+                <span>View Repos</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <button type="button" onclick="copyToClipboard('{{ profile.github }}', 'GitHub profile link')" class="contact-copy-btn" title="Copy GitHub link">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy</span>
+              </button>
+            </div>
           </div>
 
-          <div class="clean-form-field">
-            <label for="contact-message" class="clean-field-label">YOUR MESSAGE</label>
-            <textarea id="contact-message" class="clean-field-textarea" required rows="3" placeholder="Enter your message"></textarea>
+          <!-- 4. LinkedIn Profile -->
+          <div class="contact-card">
+            <div class="contact-card-top-row">
+              <div class="contact-card-icon contact-icon-linkedin" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+              </div>
+              <div class="contact-card-info">
+                <span class="contact-card-label">LINKEDIN PROFILE</span>
+                <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="contact-card-val" title="Connect on LinkedIn">
+                  linkedin.com/in/sachin
+                </a>
+              </div>
+            </div>
+            <div class="contact-card-actions">
+              <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="contact-action-btn" title="Connect on LinkedIn">
+                <span>Connect</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <button type="button" onclick="copyToClipboard('{{ profile.linkedin }}', 'LinkedIn profile link')" class="contact-copy-btn" title="Copy LinkedIn link">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy</span>
+              </button>
+            </div>
           </div>
 
-          <!-- Centered Action Buttons (Submit + Call Request) -->
-          <div class="contact-actions-center">
-            <button type="submit" class="btn btn-pill-solid">Submit</button>
-            <a href="tel:{{ profile.phone }}" class="btn btn-pill-outline">Call Request</a>
-          </div>
+        </div>
 
-          <div id="form-status" class="form-status"></div>
-        </form>
-
-        <!-- Direct Coordinates Footer Row -->
+        <!-- Direct Coordinates Strip -->
         <div class="contact-direct-strip">
-          <div class="direct-item" onclick="copyToClipboard('{{ profile.email }}', 'Email')">
-            <span class="direct-label">Email:</span>
-            <span class="direct-val">{{ profile.email }}</span>
-          </div>
-          <div class="direct-item" onclick="copyToClipboard('{{ profile.phone }}', 'Phone')">
-            <span class="direct-label">Phone:</span>
-            <span class="direct-val">{{ profile.phone }}</span>
-          </div>
           <div class="direct-item">
             <span class="direct-label">Location:</span>
-            <span class="direct-val">{{ profile.location }}</span>
+            <span class="direct-val">{{ profile.location }} (Open to Hybrid &amp; Remote)</span>
+          </div>
+          <div class="direct-item">
+            <a href="/download-resume" target="_blank" download="Sachin_Kumar_Resume.pdf" class="direct-resume-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>Download Official Resume</span>
+            </a>
           </div>
         </div>
 
@@ -587,6 +823,44 @@
     </div>
   </div>
 
+  <!-- Real Certification Badge Inspector Modal -->
+  <div id="cert-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-cert-title">
+    <div class="modal-dialog cert-modal-dialog">
+      <button class="modal-close" onclick="closeCertBadgeModal()" aria-label="Close dialog">&times;</button>
+      <div class="cert-modal-content-grid">
+        <div class="cert-modal-badge-col">
+          <div class="cert-modal-badge-wrap">
+            <img id="modal-cert-img" src="" alt="Official Certification Badge" class="cert-modal-full-img" referrerPolicy="no-referrer">
+          </div>
+          <div id="modal-cert-issuer-tag" class="cert-modal-issuer-tag"></div>
+        </div>
+        <div class="cert-modal-info-col">
+          <div class="cert-modal-meta-row">
+            <span id="modal-cert-code" class="cert-code-tag mono"></span>
+            <span id="modal-cert-category" class="cert-category-tag"></span>
+          </div>
+          <h2 id="modal-cert-title" class="modal-heading"></h2>
+          <p id="modal-cert-desc" class="modal-description"></p>
+          <div class="modal-section-block">
+            <h4 class="modal-block-heading">Core Certified Competencies:</h4>
+            <div id="modal-cert-skills" class="cert-skills-wrap"></div>
+          </div>
+          <div class="modal-actions-row">
+            <button onclick="closeCertBadgeModal()" class="btn btn-pill-outline btn-sm">Close</button>
+            <a id="modal-cert-verify-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-pill-solid btn-sm">
+              <span>Verify on Official Portal</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div id="toast" class="toast"></div>
 
@@ -603,16 +877,25 @@
         <a href="#home">Home</a>
         <a href="#about">About</a>
         <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#certifications">Certifications</a>
         <a href="#projects">Works</a>
         <a href="#contact">Contact</a>
-        <a href="/resources/Sachin_Kumar_Resume.pdf" target="_blank" download="Sachin_Kumar_Resume.pdf">Resume PDF</a>
+        <a href="/download-resume" target="_blank" download="Sachin_Kumar_Resume.pdf">Download Resume</a>
+        <a href="/view-resume" target="_blank" rel="noopener noreferrer">View Resume</a>
       </div>
 
       <div class="footer-right-socials">
-        <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <a href="mailto:{{ profile.email }}" aria-label="Email Sachin" title="Email: {{ profile.email }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </a>
+        <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" title="GitHub">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         </a>
-        <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" title="LinkedIn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
         </a>
       </div>

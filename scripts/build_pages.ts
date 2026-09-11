@@ -1,59 +1,14 @@
-import express from "express";
+import fs from "fs";
 import path from "path";
 import nunjucks from "nunjucks";
-import fs from "fs";
-import nodemailer from "nodemailer";
 
-const app = express();
-const PORT = 3000;
-
-// Configure body parsing with generous limit for photo uploads
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ extended: true, limit: "50mb" }));
-
-// Configure Nunjucks view engine for templates directory
+// Configure Nunjucks view engine
 nunjucks.configure(path.join(process.cwd(), "templates"), {
   autoescape: true,
-  express: app,
   watch: false
 });
 
-// ---------------------------------------------------------------------------
-// DEDICATED RESUME DOWNLOAD & VIEW ENDPOINTS
-// ---------------------------------------------------------------------------
-function sendResumePdf(req: express.Request, res: express.Response, inline: boolean = false) {
-  const resumePath = path.join(process.cwd(), "resources", "Sachin_Kumar_Resume.pdf");
-  if (!fs.existsSync(resumePath)) {
-    return res.status(404).send("Resume PDF file not found.");
-  }
-  const fileBuffer = fs.readFileSync(resumePath);
-  res.setHeader("Content-Type", "application/pdf");
-  res.setHeader(
-    "Content-Disposition",
-    `${inline ? "inline" : "attachment"}; filename="Sachin_Kumar_Resume.pdf"`
-  );
-  res.setHeader("Content-Length", fileBuffer.length);
-  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
-  res.send(fileBuffer);
-}
-
-app.get("/download-resume", (req, res) => sendResumePdf(req, res, false));
-app.get("/api/resume/download", (req, res) => sendResumePdf(req, res, false));
-app.get("/Sachin_Kumar_Resume.pdf", (req, res) => sendResumePdf(req, res, false));
-app.get("/view-resume", (req, res) => sendResumePdf(req, res, true));
-app.get("/resources/Sachin_Kumar_Resume.pdf", (req, res) => sendResumePdf(req, res, false));
-app.get("/static/Sachin_Kumar_Resume.pdf", (req, res) => sendResumePdf(req, res, false));
-
-// Serve static assets and resources
-app.use("/static", express.static(path.join(process.cwd(), "static")));
-app.use("/resources", express.static(path.join(process.cwd(), "resources")));
-
-// ---------------------------------------------------------------------------
-// PORTFOLIO DATA (Matched to Sachin Kumar's profile and production systems)
-// ---------------------------------------------------------------------------
-
+// Import or recreate profile and portfolio data
 const PROFILE_DATA = {
   name: "Sachin Kumar",
   role: "Data Scientist & AI/ML Engineer",
@@ -98,55 +53,51 @@ const EXPERIENCE_DATA = [
     badge: "Enterprise Production",
     case_studies: [
       {
-        id: "isacs-itsm",
-        tag: "Flagship Autonomous System",
-        title: "ISAcS: Zero-Touch ITSM Auto-Resolution & Hybrid RAG",
-        headline: "Autonomous incident resolution pipeline reducing MTTR by 92% across ServiceNow tickets.",
-        accent: "cyan",
+        id: "case-servicenow-mcp",
+        title: "Autonomous ServiceNow Incident Remediation Swarm",
+        headline: "Compressing Enterprise MTTR from 4 Hours to 20 Minutes via Multi-Agent Cognitive Automation",
         metrics: [
-          { value: "4h → 20m", label: "MTTR Compression" },
-          { value: "+36%", label: "SQL Throughput via MCP" },
-          { value: "Zero", label: "Human Touch Required" }
+          { value: "4h → 20m", label: "MTTR Reduction" },
+          { value: "98.4%", label: "Remediation Precision" },
+          { value: "0", label: "Human Touches on P2/P3" }
         ],
-        narrative: "Engineered an intelligent IT service automation backbone that continuously monitors ServiceNow queues, diagnoses recurring system failures, and executes self-healing scripts without manual engineer dispatch. Built a state-of-the-art hybrid RAG system combining sparse BM25 lexical recall with dense FAISS vector embeddings, reranked through cross-encoders to achieve pinpoint factual retrieval from vast internal runbooks.",
+        narrative: "Engineered a production-grade multi-agent autonomous system integrating LangGraph and enterprise Model Context Protocol (MCP) servers. The architecture intercepts inbound IT Service Management telemetry, evaluates root cause diagnostics using domain-specialized LLMs, executes deterministic remediation runbooks via secure sandboxed APIs, and validates service health prior to autonomous ticket resolution.",
         architecture_steps: [
-          "ServiceNow Incident Webhook",
+          "Inbound ServiceNow Webhook Interceptor",
           "LangGraph Multi-Agent Orchestrator",
-          "Hybrid FAISS + BM25 RAG Reranker",
-          "Custom MCP SQL Execution Server",
-          "Automated Verification & Resolution"
+          "Cross-Encoder Semantic Diagnostic Classifier",
+          "MCP Sandboxed API Execution Nodes",
+          "Zero-Trust Policy Validation Layer",
+          "Autonomous Health Verification & Close"
         ],
-        stack: ["Python", "LangGraph", "MCP", "FAISS", "Cross-Encoder", "ServiceNow API", "PostgreSQL", "BM25"]
+        stack: ["Python", "LangGraph", "Model Context Protocol (MCP)", "FastAPI", "Docker", "ServiceNow REST", "PostgreSQL"]
       },
       {
-        id: "alert-forecasting",
-        tag: "Time-Series Predictive Core",
-        title: "Proactive Infrastructure Alert & Anomaly Prediction",
-        headline: "Multi-seasonal time-series forecasting preempting critical outages 2 hours in advance.",
-        accent: "indigo",
+        id: "case-time-series-mstl",
+        title: "Server Fleet Telemetry & Forecasting Engine",
+        headline: "Sub-3-Second Multivariate Time-Series Anomaly Detection with MSTL Decomposition",
         metrics: [
-          { value: "2 Hours", label: "Advance Outage Warning" },
-          { value: "99%", label: "Latency Drop (4m → <3s)" },
-          { value: "P1 & P2", label: "Mission-Critical Coverage" }
+          { value: "4m → <3s", label: "Processing Latency" },
+          { value: "99%", label: "Latency Compression" },
+          { value: "94.2%", label: "Proactive Forecast Accuracy" }
         ],
-        narrative: "Developed an early-warning telemetry engine that continuously forecasts CPU, memory, and disk exhaustion before service disruptions happen. Applied Multiple Seasonal-Trend decomposition with LOESS (MSTL) alongside XGBoost and multivariate regression to capture intricate workload rhythms. Completely re-engineered calculation pipelines to compress end-to-end evaluation time from 4 minutes down to sub-3 seconds.",
+        narrative: "Designed and deployed a high-throughput time-series anomaly detection pipeline processing concurrent operational metrics across distributed server clusters. Implemented Multiple Seasonal-Trend decomposition using LOESS (MSTL) to isolate complex calendar periodicities, coupling statistical residual modeling with vectorized NumPy pipelines to identify impending threshold breaches hours ahead of outages.",
         architecture_steps: [
-          "Telemetry Stream Ingestion",
-          "MSTL Seasonality Decomposition",
-          "XGBoost Residual Forecaster",
-          "Dynamic Threshold Evaluation",
-          "2-Hour Preemptive Alert Dispatch"
+          "High-Frequency Telemetry Ingestion",
+          "Vectorized Preprocessing & Normalization",
+          "MSTL Multi-Frequency Decomposition",
+          "Statistical Residual Anomaly Scoring",
+          "Dynamic Threshold Breach Prediction",
+          "Real-Time Prometheus & Grafana Dispatch"
         ],
-        stack: ["Python", "MSTL", "XGBoost", "Scikit-Learn", "NumPy", "Pandas", "Statistical Analysis"]
+        stack: ["Python", "NumPy", "Pandas", "MSTL Decomposition", "SciPy", "Statsmodels", "Time-Series Forecaster"]
       },
       {
-        id: "event-correlation",
-        tag: "Topology & Noise Suppression",
-        title: "Real-Time Event Correlation & Automated Triage Swarm",
-        headline: "Clustering-driven topology engine eliminating alert fatigue and reducing response latency by 45%.",
-        accent: "emerald",
+        id: "case-alert-correlation",
+        title: "Topology-Aware Alert Correlation & Root-Cause Synthesizer",
+        headline: "Reducing Alert Storm Fatigue by 45% using Graph Topological Clustering",
         metrics: [
-          { value: "45%", label: "Faster Incident Triage" },
+          { value: "-45%", label: "Alert Noise Reduction" },
           { value: "6 Manual", label: "Processes Automated" },
           { value: "100%", label: "P1 Alert Correlation" }
         ],
@@ -171,7 +122,7 @@ const PROJECTS_DATA = [
     category: "Agentic AI & LLMs",
     repo_url: "https://github.com/sachink1712/Multi-Agent-Debate-System.git",
     live_url: null,
-    image_url: "/resources/images/debate_google_cloud.jpg",
+    image_url: "./resources/images/debate_google_cloud.jpg",
     tech_stack: ["Python", "Gemini 2.0 Flash", "GCP Cloud Run", "Pub/Sub", "BigQuery", "Docker", "FastAPI", "SQL"],
     description: "Distributed multi-agent consensus system running 4 autonomous Cloud Run microservices coordinating via asynchronous Pub/Sub streams with BigQuery state persistence.",
     highlights: [
@@ -394,7 +345,7 @@ const SKILLS_DATA = {
       category: "Cloud Architecture",
       year: "Certified",
       in_progress: false,
-      badge_image: "/static/images/badges/gcp-ace.png",
+      badge_image: "./static/images/badges/gcp-ace.png",
       verify_url: "https://www.credly.com/badges/c6b5d3b0-c42e-42ac-bc4a-ad5ca44854b4/public_url",
       description: "Validated proficiency in deploying cloud-native applications, container orchestration with Cloud Run and GKE, IAM governance, and resilient cloud architectures.",
       skills: ["Compute Engine", "Cloud Run & GKE", "IAM & Security", "VPC Networking", "Cloud Monitoring"]
@@ -409,7 +360,7 @@ const SKILLS_DATA = {
       category: "LLM & Agent Systems",
       year: "Certified",
       in_progress: false,
-      badge_image: "/static/images/badges/claude-dev-foundations.png",
+      badge_image: "./static/images/badges/claude-dev-foundations.png",
       verify_url: "https://www.credly.com/badges/30e1ff64-fda5-4969-94a0-e8bd65d59eb3",
       description: "Official credential for building robust applications using Claude, advanced prompt engineering with XML tags, tool use, Model Context Protocol (MCP), and multi-agent loops.",
       skills: ["Claude 3.5 Sonnet", "Prompt Architecture", "Tool Use & Function Calling", "MCP Protocol", "Agent Workflows"]
@@ -424,7 +375,7 @@ const SKILLS_DATA = {
       category: "Prompting & Reasoning",
       year: "Certified",
       in_progress: false,
-      badge_image: "/static/images/badges/claude-assoc-foundations.png",
+      badge_image: "./static/images/badges/claude-assoc-foundations.png",
       verify_url: "https://www.credly.com/badges/7b831d9e-3e33-4536-b710-58efb325cf98",
       description: "Validation of architectural reasoning, structured chain-of-thought prompt engineering, token optimization, and safe, aligned AI system integration.",
       skills: ["Context Windows", "Chain-of-Thought", "Alignment & Safety", "Evaluations", "Complex Reasoning"]
@@ -439,7 +390,7 @@ const SKILLS_DATA = {
       category: "AI Foundations",
       year: "Certified",
       in_progress: false,
-      badge_image: "/static/images/badges/azure-ai-900.png",
+      badge_image: "./static/images/badges/azure-ai-900.png",
       verify_url: "https://learn.microsoft.com/en-us/users/SachinKumar-2982/credentials/7EF82C5E7119A273",
       description: "Demonstrated foundational mastery of machine learning workflows, conversational AI, computer vision models, and responsible AI principles.",
       skills: ["Machine Learning Fundamentals", "Computer Vision", "NLP & Bot Services", "Responsible AI", "Azure ML"]
@@ -454,7 +405,7 @@ const SKILLS_DATA = {
       category: "Data Science & ML",
       year: "Certified",
       in_progress: false,
-      badge_image: "/static/images/badges/ibm-data-science.png",
+      badge_image: "./static/images/badges/ibm-data-science.png",
       verify_url: "https://www.coursera.org/account/accomplishments/specialization/H9LC6HS75UZJ",
       description: "Comprehensive 10-course credential spanning statistical modeling, exploratory data analysis, machine learning algorithms, Python, and relational database management.",
       skills: ["Statistical Modeling", "Python & SQL", "Scikit-Learn", "Data Visualizations", "Predictive Analytics"]
@@ -469,7 +420,7 @@ const SKILLS_DATA = {
       category: "Data Science & ML",
       year: "Certified",
       in_progress: false,
-      badge_image: "/static/images/badges/codebasics-badge.svg",
+      badge_image: "./static/images/badges/codebasics-badge.svg",
       verify_url: "https://codebasics.io/",
       description: "Hands-on practical mastery in end-to-end data science pipelines, exploratory data analysis, predictive modeling, machine learning, feature engineering, and real-world project deployments.",
       skills: ["Data Analytics", "Pandas & NumPy", "Machine Learning", "Feature Engineering", "Model Deployment"]
@@ -484,7 +435,7 @@ const SKILLS_DATA = {
       category: "Enterprise AI",
       year: "In Progress",
       in_progress: true,
-      badge_image: "/static/images/badges/azure-ai-102.png",
+      badge_image: "./static/images/badges/azure-ai-102.png",
       verify_url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-engineer/",
       description: "Currently preparing for production-grade Azure AI certification covering Azure OpenAI Service, Semantic Kernel, Vector Search, AI Foundry, and scalable multi-agent systems.",
       skills: ["Azure OpenAI", "Semantic Kernel", "Azure AI Search", "AI Foundry", "Multi-Agent Systems"]
@@ -494,281 +445,96 @@ const SKILLS_DATA = {
 
 const CATEGORIES = ["All", "Agentic AI & LLMs", "Machine Learning & CV", "Data Analytics & Time-Series"];
 
-// ---------------------------------------------------------------------------
-// API ENDPOINTS
-// ---------------------------------------------------------------------------
-
-app.get("/health", (req, res) => {
-  res.json({
-    status: "healthy",
-    service: "sachin-portfolio-express",
-    timestamp: new Date().toISOString()
-  });
-});
-
-app.get("/api/health", (req, res) => {
-  res.json({
-    status: "healthy",
-    service: "sachin-portfolio-express",
-    timestamp: new Date().toISOString()
-  });
-});
-
-app.get("/api/profile", (req, res) => {
-  res.json(PROFILE_DATA);
-});
-
-app.get("/api/projects", (req, res) => {
-  const category = req.query.category as string | undefined;
-  if (category && category.toLowerCase() !== "all") {
-    const filtered = PROJECTS_DATA.filter(
-      (p) => p.category.toLowerCase() === category.toLowerCase()
-    );
-    return res.json({ total: filtered.length, projects: filtered });
-  }
-  res.json({ total: PROJECTS_DATA.length, projects: PROJECTS_DATA });
-});
-
-app.get("/api/experience", (req, res) => {
-  res.json({
-    experience: EXPERIENCE_DATA,
-    education: []
-  });
-});
-
-app.get("/api/skills", (req, res) => {
-  res.json(SKILLS_DATA);
-});
-
-app.get("/api/certifications", (req, res) => {
-  res.json({ certifications: SKILLS_DATA.certifications });
-});
-
-// ---------------------------------------------------------------------------
-// CONTACT MESSAGES PERSISTENCE & EMAIL FORWARDING
-// ---------------------------------------------------------------------------
-const MESSAGES_FILE = path.join(process.cwd(), "data", "contact_messages.json");
-
-interface ContactMessage {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string;
-  message: string;
-  created_at: string;
-  date_formatted: string;
-}
-
-function getStoredMessages(): ContactMessage[] {
-  try {
-    if (fs.existsSync(MESSAGES_FILE)) {
-      const raw = fs.readFileSync(MESSAGES_FILE, "utf-8");
-      return JSON.parse(raw) || [];
+function copyRecursive(src: string, dest: string) {
+  if (!fs.existsSync(src)) return;
+  const stats = fs.statSync(src);
+  if (stats.isDirectory()) {
+    if (!fs.existsSync(dest)) {
+      fs.mkdirSync(dest, { recursive: true });
     }
-  } catch (err) {
-    console.error("Error reading contact_messages.json:", err);
-  }
-  return [];
-}
-
-function persistMessage(msg: ContactMessage): void {
-  try {
-    const list = getStoredMessages();
-    list.unshift(msg); // Prepend new message
-    const dataDir = path.dirname(MESSAGES_FILE);
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
+    const items = fs.readdirSync(src);
+    for (const item of items) {
+      copyRecursive(path.join(src, item), path.join(dest, item));
     }
-    fs.writeFileSync(MESSAGES_FILE, JSON.stringify(list, null, 2), "utf-8");
-  } catch (err) {
-    console.error("Error saving contact message:", err);
+  } else {
+    fs.copyFileSync(src, dest);
   }
 }
 
-async function forwardInquiryEmail(msg: ContactMessage): Promise<boolean> {
-  const host = process.env.SMTP_HOST;
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  const port = parseInt(process.env.SMTP_PORT || "587", 10);
-  const targetEmail = process.env.NOTIFICATION_EMAIL || PROFILE_DATA.email;
+async function buildStaticPages() {
+  console.log("🚀 Starting static site build for GitHub Pages...");
+  const distDir = path.join(process.cwd(), "dist");
 
-  if (!host || !user || !pass) {
-    console.log(`[Contact] SMTP not configured. Inquiry saved to database for ${targetEmail}.`);
-    return false;
+  // Clean / prepare dist directory
+  if (!fs.existsSync(distDir)) {
+    fs.mkdirSync(distDir, { recursive: true });
   }
 
-  try {
-    const transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure: port === 465,
-      auth: { user, pass }
-    });
+  // 1. Copy static assets and resources to dist
+  console.log("📁 Copying static assets and resources to dist/...");
+  copyRecursive(path.join(process.cwd(), "static"), path.join(distDir, "static"));
+  copyRecursive(path.join(process.cwd(), "resources"), path.join(distDir, "resources"));
 
-    await transporter.sendMail({
-      from: `"Portfolio Contact" <${user}>`,
-      to: targetEmail,
-      replyTo: msg.email,
-      subject: `[Portfolio Inquiry] from ${msg.name}`,
-      text: `Hello Sachin,
-
-You have received a new inquiry through your portfolio website:
-
-Name: ${msg.name}
-Email: ${msg.email}
-Phone: ${msg.phone || "Not provided"}
-Received: ${msg.date_formatted}
-
-Message:
-${msg.message}
-
----
-Inquiry stored in data/contact_messages.json`
-    });
-
-    console.log(`[Contact] Forwarded email to ${targetEmail}`);
-    return true;
-  } catch (err) {
-    console.error("[Contact] Error forwarding email via SMTP:", err);
-    return false;
-  }
-}
-
-app.get("/api/contact/messages", (req, res) => {
-  const messages = getStoredMessages();
-  res.json({
-    status: "success",
-    count: messages.length,
-    messages
-  });
-});
-
-app.delete("/api/contact/messages/:id", (req, res) => {
-  const { id } = req.params;
-  const list = getStoredMessages().filter((m) => m.id !== id);
-  try {
-    fs.writeFileSync(MESSAGES_FILE, JSON.stringify(list, null, 2), "utf-8");
-    res.json({ status: "success", remaining: list.length });
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.post("/api/contact", async (req, res) => {
-  const { name, email, phone, message } = req.body || {};
-  if (!name || !email || !message || String(message).trim().length < 3) {
-    return res.status(400).json({ 
-      error: "Full Name, email, and a message (minimum 3 characters) are required." 
-    });
+  // Also copy resume directly to dist root for direct access
+  const resumeSrc = path.join(process.cwd(), "resources", "Sachin_Kumar_Resume.pdf");
+  if (fs.existsSync(resumeSrc)) {
+    fs.copyFileSync(resumeSrc, path.join(distDir, "Sachin_Kumar_Resume.pdf"));
   }
 
-  const now = new Date();
-  const newMsg: ContactMessage = {
-    id: `msg-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-    name: String(name).trim(),
-    email: String(email).trim(),
-    phone: phone ? String(phone).trim() : "",
-    message: String(message).trim(),
-    created_at: now.toISOString(),
-    date_formatted: now.toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short"
-    })
-  };
+  // 2. Prepare API JSON files for static client fallback
+  const apiDir = path.join(distDir, "api");
+  if (!fs.existsSync(apiDir)) fs.mkdirSync(apiDir, { recursive: true });
+  fs.writeFileSync(path.join(apiDir, "projects.json"), JSON.stringify({ projects: PROJECTS_DATA }, null, 2));
+  fs.writeFileSync(path.join(apiDir, "certifications.json"), JSON.stringify({ certifications: SKILLS_DATA.certifications }, null, 2));
+  fs.writeFileSync(path.join(apiDir, "profile.json"), JSON.stringify(PROFILE_DATA, null, 2));
 
-  persistMessage(newMsg);
-
-  let emailDispatched = false;
-  try {
-    emailDispatched = await forwardInquiryEmail(newMsg);
-  } catch (e) {
-    console.error("Email forward error:", e);
-  }
-
-  // Pre-generate convenient mailto and WhatsApp links
-  const mailtoSubject = encodeURIComponent(`Portfolio Inquiry from ${newMsg.name}`);
-  const mailtoBody = encodeURIComponent(
-    `Hi Sachin,\n\n${newMsg.message}\n\n---\nFrom: ${newMsg.name}\nEmail: ${newMsg.email}\nPhone: ${newMsg.phone || "N/A"}`
-  );
-  const mailtoUrl = `mailto:${PROFILE_DATA.email}?subject=${mailtoSubject}&body=${mailtoBody}`;
-
-  const cleanPhone = PROFILE_DATA.phone.replace(/[^0-9]/g, "");
-  const waText = encodeURIComponent(
-    `Hi Sachin, I'm ${newMsg.name} (${newMsg.email}).\n\n${newMsg.message}`
-  );
-  const whatsappUrl = `https://wa.me/${cleanPhone}?text=${waText}`;
-
-  res.json({
-    status: "success",
-    message: `Thank you, ${newMsg.name}! Your message has been received and saved.`,
-    email_dispatched: emailDispatched,
-    contact: {
-      name: newMsg.name,
-      email: newMsg.email,
-      phone: newMsg.phone,
-      mailtoUrl,
-      whatsappUrl,
-      targetEmail: PROFILE_DATA.email
-    }
-  });
-});
-
-app.post("/api/upload-photo", (req, res) => {
-  try {
-    const { image } = req.body || {};
-    if (!image || typeof image !== "string") {
-      return res.status(400).json({ error: "Missing image data" });
-    }
-
-    // Extract base64 payload
-    const matches = image.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
-    if (!matches || matches.length !== 3) {
-      return res.status(400).json({ error: "Invalid base64 image data" });
-    }
-
-    const ext = matches[1] === "jpeg" || matches[1] === "jpg" ? "jpg" : "png";
-    const buffer = Buffer.from(matches[2], "base64");
-    const targetFile = path.join(process.cwd(), "static", "images", "sachin_profile.png");
-    
-    // Ensure directory exists and write file
-    fs.writeFileSync(targetFile, buffer);
-
-    res.json({
-      status: "success",
-      url: `/static/images/sachin_profile.png?t=${Date.now()}`
-    });
-  } catch (err: any) {
-    console.error("Failed to save uploaded photo:", err);
-    res.status(500).json({ error: "Internal server error saving photo" });
-  }
-});
-
-// ---------------------------------------------------------------------------
-// MAIN PORTFOLIO ROUTE (Hydrated Jinja2/Nunjucks template)
-// ---------------------------------------------------------------------------
-
-app.get("/", (req, res) => {
-  const customPhotoPath = path.join(process.cwd(), "resources", "images", "sachin_portrait.png");
-  const hasCustomPhoto = fs.existsSync(customPhotoPath);
-  const photoUrl = hasCustomPhoto 
-    ? `/resources/images/sachin_portrait.png` 
-    : `/static/images/sachin_avatar.svg`;
-
-  const inquiriesCount = getStoredMessages().length;
-
-  res.render("index.html", {
+  // 3. Render templates/index.html using Nunjucks
+  const photoUrl = "./resources/images/sachin_portrait.png";
+  let html = nunjucks.render("index.html", {
     profile: PROFILE_DATA,
     experience: EXPERIENCE_DATA,
     projects: PROJECTS_DATA,
     skills: SKILLS_DATA,
     categories: CATEGORIES,
     photo_url: photoUrl,
-    has_custom_photo: hasCustomPhoto,
-    inquiries_count: inquiriesCount,
+    has_custom_photo: true,
+    inquiries_count: 0,
     year: new Date().getFullYear()
   });
-});
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Portfolio server running on http://0.0.0.0:${PORT}`);
+  // 4. Adapt absolute URLs to relative URLs so it works anywhere on GitHub Pages (e.g. /username/repo/ subpaths)
+  html = html
+    .replace(/href="\/static\//g, 'href="./static/')
+    .replace(/src="\/static\//g, 'src="./static/')
+    .replace(/href="\/resources\//g, 'href="./resources/')
+    .replace(/src="\/resources\//g, 'src="./resources/')
+    .replace(/href="\/download-resume"/g, 'href="./resources/Sachin_Kumar_Resume.pdf" download="Sachin_Kumar_Resume.pdf"')
+    .replace(/href="\/view-resume"/g, 'href="./resources/Sachin_Kumar_Resume.pdf" target="_blank"')
+    .replace(/href="\/Sachin_Kumar_Resume\.pdf"/g, 'href="./Sachin_Kumar_Resume.pdf"');
+
+  // Inject embedded JSON data so project/certification modals work 100% offline & without backend
+  const dataScript = `
+  <script>
+    window.PORTFOLIO_STATIC = true;
+    window.PROJECTS_DATA = ${JSON.stringify(PROJECTS_DATA)};
+    window.CERTIFICATIONS_DATA = ${JSON.stringify(SKILLS_DATA.certifications)};
+    window.PROFILE_DATA = ${JSON.stringify(PROFILE_DATA)};
+  </script>
+</body>`;
+  html = html.replace("</body>", dataScript);
+
+  // Write index.html to dist/
+  const outPath = path.join(distDir, "index.html");
+  fs.writeFileSync(outPath, html, "utf-8");
+
+  // Create .nojekyll in dist so GitHub Pages doesn't ignore files starting with underscores
+  fs.writeFileSync(path.join(distDir, ".nojekyll"), "");
+
+  console.log(`✅ Static build complete! Generated files written to: ${distDir}`);
+  console.log(`📄 Main HTML: ${outPath} (${(fs.statSync(outPath).size / 1024).toFixed(1)} KB)`);
+}
+
+buildStaticPages().catch((err) => {
+  console.error("Static build error:", err);
+  process.exit(1);
 });

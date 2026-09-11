@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initUserPhoto();
   initScrollspy();
   initProjectFilters();
+  initCertFilters();
   initContactForm();
   initMobileNav();
 });
@@ -63,9 +64,9 @@ function initScrollspy() {
       }
     }
 
-    // Near bottom check
-    if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 60) {
-      currentSectionId = "contact";
+    // Near bottom check: highlight the last active section
+    if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 60 && sections.length > 0) {
+      currentSectionId = sections[sections.length - 1].getAttribute("id");
     }
 
     navLinks.forEach((link) => {
@@ -200,42 +201,66 @@ window.openProjectModal = function (projectId) {
   const tagsEl = document.getElementById("modal-project-tags");
   const repoLinkEl = document.getElementById("modal-project-repo");
 
+  const populateProject = (project) => {
+    if (!project) return;
+    titleEl.textContent = project.title;
+    categoryEl.textContent = project.category;
+    descEl.textContent = project.description;
+    repoLinkEl.href = project.repo_url;
+
+    // Highlights
+    highlightsEl.innerHTML = "";
+    if (project.highlights && project.highlights.length > 0) {
+      project.highlights.forEach((h) => {
+        const li = document.createElement("li");
+        li.textContent = h;
+        highlightsEl.appendChild(li);
+      });
+    }
+
+    // Tech Stack Tags
+    tagsEl.innerHTML = "";
+    if (project.tech_stack) {
+      project.tech_stack.forEach((t) => {
+        const span = document.createElement("span");
+        span.className = "tech-chip";
+        span.textContent = t;
+        tagsEl.appendChild(span);
+      });
+    }
+
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  };
+
+  // Check static embedded data first
+  if (window.PROJECTS_DATA && Array.isArray(window.PROJECTS_DATA)) {
+    const project = window.PROJECTS_DATA.find((p) => p.id === projectId);
+    if (project) {
+      populateProject(project);
+      return;
+    }
+  }
+
   fetch(`/api/projects`)
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) throw new Error("Status " + res.status);
+      return res.json();
+    })
     .then((data) => {
       const project = data.projects.find((p) => p.id === projectId);
-      if (!project) return;
-
-      titleEl.textContent = project.title;
-      categoryEl.textContent = project.category;
-      descEl.textContent = project.description;
-      repoLinkEl.href = project.repo_url;
-
-      // Highlights
-      highlightsEl.innerHTML = "";
-      if (project.highlights && project.highlights.length > 0) {
-        project.highlights.forEach((h) => {
-          const li = document.createElement("li");
-          li.textContent = h;
-          highlightsEl.appendChild(li);
-        });
-      }
-
-      // Tech Stack Tags
-      tagsEl.innerHTML = "";
-      if (project.tech_stack) {
-        project.tech_stack.forEach((t) => {
-          const span = document.createElement("span");
-          span.className = "tech-chip";
-          span.textContent = t;
-          tagsEl.appendChild(span);
-        });
-      }
-
-      modal.classList.add("open");
-      document.body.style.overflow = "hidden";
+      populateProject(project);
     })
-    .catch((err) => console.error("Error loading project details:", err));
+    .catch(() => {
+      // Fallback to relative static JSON for GitHub Pages deployment
+      fetch("./api/projects.json")
+        .then((res) => res.json())
+        .then((data) => {
+          const project = data.projects.find((p) => p.id === projectId);
+          populateProject(project);
+        })
+        .catch((err) => console.error("Error loading project details:", err));
+    });
 };
 
 window.closeProjectModal = function () {
@@ -246,10 +271,146 @@ window.closeProjectModal = function () {
   }
 };
 
-// Close modals on Escape key or backdrop click
+// ---------------------------------------------------------------------------
+// 6.2. Certification Badge Modal & Filter Operations
+// ---------------------------------------------------------------------------
+let cachedCertifications = null;
+
+async function getCertificationsData() {
+  if (cachedCertifications) return cachedCertifications;
+  if (window.CERTIFICATIONS_DATA && Array.isArray(window.CERTIFICATIONS_DATA)) {
+    cachedCertifications = window.CERTIFICATIONS_DATA;
+    return cachedCertifications;
+  }
+  try {
+    const res = await fetch("/api/certifications");
+    if (!res.ok) throw new Error("Status " + res.status);
+    const data = await res.json();
+    cachedCertifications = data.certifications || [];
+    return cachedCertifications;
+  } catch (e) {
+    try {
+      const res = await fetch("./api/certifications.json");
+      const data = await res.json();
+      cachedCertifications = data.certifications || [];
+      return cachedCertifications;
+    } catch (err) {
+      console.error("Failed to load certifications data:", err);
+      return [];
+    }
+  }
+}
+
+function initCertFilters() {
+  const filterBtns = document.querySelectorAll(".cert-filter-btn");
+  const cards = document.querySelectorAll(".cert-card");
+
+  if (!filterBtns.length || !cards.length) return;
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const selectedIssuer = btn.getAttribute("data-issuer");
+
+      cards.forEach((card) => {
+        const cardIssuer = card.getAttribute("data-issuer");
+        if (selectedIssuer === "all" || cardIssuer === selectedIssuer) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+  });
+
+  // Keyboard accessibility for flip cards
+  cards.forEach((card) => {
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        if (!e.target.closest("a") && !e.target.closest("button")) {
+          e.preventDefault();
+          window.flipCertCard(card);
+        }
+      }
+    });
+  });
+}
+
+window.flipCertCard = function (cardEl) {
+  if (!cardEl) return;
+  cardEl.classList.toggle("is-flipped");
+};
+
+window.handleCertCardClick = function (cardEl, event) {
+  // If user clicked directly on an anchor or button with distinct action, don't flip
+  if (event && event.target && event.target.closest("a")) {
+    return;
+  }
+  window.flipCertCard(cardEl);
+};
+
+window.openCertBadgeModal = async function (certId) {
+  const modal = document.getElementById("cert-modal");
+  if (!modal) return;
+
+  const certs = await getCertificationsData();
+  const cert = certs.find((c) => c.id === certId);
+  if (!cert) return;
+
+  const imgEl = document.getElementById("modal-cert-img");
+  const issuerEl = document.getElementById("modal-cert-issuer-tag");
+  const codeEl = document.getElementById("modal-cert-code");
+  const catEl = document.getElementById("modal-cert-category");
+  const titleEl = document.getElementById("modal-cert-title");
+  const descEl = document.getElementById("modal-cert-desc");
+  const skillsEl = document.getElementById("modal-cert-skills");
+  const verifyLinkEl = document.getElementById("modal-cert-verify-link");
+
+  if (imgEl) {
+    imgEl.src = cert.badge_image;
+    imgEl.alt = `${cert.title} Badge`;
+  }
+  if (issuerEl) issuerEl.textContent = `${cert.issuer} • ${cert.year}`;
+  if (codeEl) codeEl.textContent = cert.code;
+  if (catEl) catEl.textContent = cert.category;
+  if (titleEl) titleEl.textContent = cert.title;
+  if (descEl) descEl.textContent = cert.description;
+
+  if (skillsEl) {
+    skillsEl.innerHTML = "";
+    if (cert.skills && cert.skills.length) {
+      cert.skills.forEach((sk) => {
+        const tag = document.createElement("span");
+        tag.className = "cert-skill-tag";
+        tag.textContent = sk;
+        skillsEl.appendChild(tag);
+      });
+    }
+  }
+
+  if (verifyLinkEl) {
+    verifyLinkEl.href = cert.verify_url;
+  }
+
+  modal.classList.add("open");
+  document.body.style.overflow = "hidden";
+};
+
+window.closeCertBadgeModal = function () {
+  const modal = document.getElementById("cert-modal");
+  if (modal) {
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+};
+
+// Close all modals on Escape key or backdrop click
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     window.closeProjectModal();
+    window.closeCertBadgeModal();
   }
 });
 
@@ -257,13 +418,44 @@ document.querySelectorAll(".modal-backdrop").forEach((backdrop) => {
   backdrop.addEventListener("click", (e) => {
     if (e.target === backdrop) {
       window.closeProjectModal();
+      window.closeCertBadgeModal();
     }
   });
 });
 
 // ---------------------------------------------------------------------------
-// 7. Contact Form Submission
+// 7. Contact Form Submission & Inquiries Inbox Manager
 // ---------------------------------------------------------------------------
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function updateInboxCounters(count) {
+  const footerBadge = document.getElementById("footer-inbox-badge");
+  if (footerBadge) footerBadge.textContent = count;
+  document.querySelectorAll(".inbox-count-display").forEach((el) => {
+    el.textContent = count;
+  });
+}
+
+async function refreshInboxCount() {
+  try {
+    const res = await fetch("/api/contact/messages");
+    if (res.ok) {
+      const data = await res.json();
+      updateInboxCounters(data.count || 0);
+    }
+  } catch (e) {
+    console.error("Failed to refresh inbox counter:", e);
+  }
+}
+
 function initContactForm() {
   const form = document.getElementById("contact-form");
   const statusEl = document.getElementById("form-status");
@@ -276,17 +468,33 @@ function initContactForm() {
     const submitBtn = form.querySelector("button[type='submit']");
     const originalText = submitBtn.innerHTML;
     submitBtn.disabled = true;
-    submitBtn.innerHTML = "Sending...";
+    submitBtn.innerHTML = `
+      <span style="display:inline-flex; align-items:center; gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-icon">
+          <line x1="12" y1="2" x2="12" y2="6"></line>
+          <line x1="12" y1="18" x2="12" y2="22"></line>
+          <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+          <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+          <line x1="2" y1="12" x2="6" y2="12"></line>
+          <line x1="18" y1="12" x2="22" y2="12"></line>
+        </svg>
+        Saving...
+      </span>
+    `;
 
     statusEl.className = "form-status";
     statusEl.style.display = "none";
 
-    const phoneVal = document.getElementById("contact-phone") ? document.getElementById("contact-phone").value : "";
+    const nameVal = document.getElementById("contact-name").value.trim();
+    const emailVal = document.getElementById("contact-email").value.trim();
+    const phoneVal = document.getElementById("contact-phone") ? document.getElementById("contact-phone").value.trim() : "";
+    const messageVal = document.getElementById("contact-message").value.trim();
+
     const payload = {
-      name: document.getElementById("contact-name").value,
-      email: document.getElementById("contact-email").value,
-      subject: phoneVal ? `Contact from ${phoneVal}` : "Portfolio Inquiry",
-      message: document.getElementById("contact-message").value
+      name: nameVal,
+      email: emailVal,
+      phone: phoneVal,
+      message: messageVal
     };
 
     try {
@@ -299,17 +507,52 @@ function initContactForm() {
       const data = await res.json();
 
       if (res.ok) {
-        statusEl.textContent = data.message || "Message sent successfully!";
+        const mailtoUrl = data.contact?.mailtoUrl || `mailto:sachinkumar171201@gmail.com?subject=Portfolio Inquiry from ${encodeURIComponent(nameVal)}`;
+        const whatsappUrl = data.contact?.whatsappUrl || `https://wa.me/919840978758?text=Hi Sachin, I am ${encodeURIComponent(nameVal)}`;
+
         statusEl.className = "form-status success";
+        statusEl.innerHTML = `
+          <div class="contact-success-card">
+            <div class="success-header">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+              <span>Message Received &amp; Saved!</span>
+            </div>
+            <p class="success-desc">
+              Thank you, <strong>${escapeHtml(nameVal)}</strong>. Your message has been saved in Sachin's portfolio inbox.
+              ${data.email_dispatched ? "An automated notification has also been dispatched." : ""}
+            </p>
+            <div class="success-actions-row">
+              <a href="${mailtoUrl}" class="btn-success-action" title="Send a direct copy via your email client">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span>Open in Email App</span>
+              </a>
+              <a href="${whatsappUrl}" target="_blank" rel="noopener noreferrer" class="btn-success-action btn-wa" title="Send message via WhatsApp to Sachin">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                <span>Send on WhatsApp</span>
+              </a>
+            </div>
+          </div>
+        `;
         statusEl.style.display = "block";
         form.reset();
-        showToast("Inquiry sent successfully.");
+        showToast("Inquiry recorded successfully!");
+        refreshInboxCount();
       } else {
-        throw new Error(data.detail || "Failed to send message.");
+        throw new Error(data.error || data.detail || "Failed to submit message.");
       }
     } catch (err) {
-      statusEl.textContent = err.message || "An error occurred. Please try again or email directly.";
       statusEl.className = "form-status error";
+      statusEl.innerHTML = `
+        <div class="contact-error-card">
+          <span>${escapeHtml(err.message || "An error occurred while submitting.")}</span>
+          <div class="contact-fallback-links">
+            <a href="mailto:sachinkumar171201@gmail.com">Direct Email: sachinkumar171201@gmail.com</a>
+            <a href="tel:+91-9840978758">Phone: +91-9840978758</a>
+          </div>
+        </div>
+      `;
       statusEl.style.display = "block";
     } finally {
       submitBtn.disabled = false;
@@ -317,6 +560,132 @@ function initContactForm() {
     }
   });
 }
+
+// ---------------------------------------------------------------------------
+// INQUIRIES INBOX MODAL CONTROLS
+// ---------------------------------------------------------------------------
+window.openInboxModal = async function () {
+  const modal = document.getElementById("inbox-modal");
+  if (!modal) return;
+  modal.classList.add("open");
+  await window.refreshInboxMessages();
+};
+
+window.closeInboxModal = function () {
+  const modal = document.getElementById("inbox-modal");
+  if (modal) modal.classList.remove("open");
+};
+
+window.refreshInboxMessages = async function () {
+  const listEl = document.getElementById("inbox-messages-list");
+  if (!listEl) return;
+
+  listEl.innerHTML = `<div class="inbox-empty-state"><p>Loading messages...</p></div>`;
+
+  try {
+    const res = await fetch("/api/contact/messages");
+    if (!res.ok) throw new Error("Failed to fetch messages");
+    const data = await res.json();
+    const messages = data.messages || [];
+
+    updateInboxCounters(messages.length);
+
+    if (messages.length === 0) {
+      listEl.innerHTML = `
+        <div class="inbox-empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          <h4 style="font-size:1.05rem; font-weight:700; color:var(--text-main); margin-bottom:4px;">No inquiries yet</h4>
+          <p style="font-size:0.86rem; color:var(--text-muted); margin:0;">When visitors submit the Contact Me form, their messages will appear here.</p>
+        </div>
+      `;
+      return;
+    }
+
+    listEl.innerHTML = messages
+      .map((m) => {
+        const mailtoReply = `mailto:${encodeURIComponent(m.email)}?subject=${encodeURIComponent("Re: Portfolio Inquiry")}`;
+        const phoneLink = m.phone ? `tel:${encodeURIComponent(m.phone)}` : "";
+        const cleanDigits = m.phone ? m.phone.replace(/[^0-9]/g, "") : "";
+        const waLink = cleanDigits ? `https://wa.me/${cleanDigits}` : "";
+
+        return `
+          <div class="inbox-card" id="inbox-item-${escapeHtml(m.id)}">
+            <div class="inbox-card-top">
+              <span class="inbox-sender-name">${escapeHtml(m.name)}</span>
+              <span class="inbox-time-tag">${escapeHtml(m.date_formatted || m.created_at)}</span>
+            </div>
+
+            <div class="inbox-contacts-row">
+              <a href="${mailtoReply}" class="inbox-contact-pill" title="Reply to ${escapeHtml(m.email)}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span>${escapeHtml(m.email)}</span>
+              </a>
+
+              ${
+                m.phone
+                  ? `<a href="${phoneLink}" class="inbox-contact-pill" title="Call ${escapeHtml(m.phone)}">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                      <span>${escapeHtml(m.phone)}</span>
+                    </a>`
+                  : ""
+              }
+            </div>
+
+            <div class="inbox-message-box">
+              ${escapeHtml(m.message)}
+            </div>
+
+            <div class="inbox-card-footer">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <a href="${mailtoReply}" class="inbox-btn-reply">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+                  <span>Reply via Email</span>
+                </a>
+                ${
+                  waLink
+                    ? `<a href="${waLink}" target="_blank" rel="noopener noreferrer" class="inbox-btn-reply" style="background:#16a34a;">
+                        <span>WhatsApp</span>
+                      </a>`
+                    : ""
+                }
+              </div>
+              <button onclick="deleteInquiry('${escapeHtml(m.id)}')" class="inbox-btn-del" title="Delete this message">
+                Delete
+              </button>
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+  } catch (err) {
+    listEl.innerHTML = `
+      <div class="inbox-empty-state" style="color:#b91c1c;">
+        <p>Failed to load inquiries: ${escapeHtml(err.message)}</p>
+      </div>
+    `;
+  }
+};
+
+window.deleteInquiry = async function (id) {
+  if (!confirm("Are you sure you want to delete this inquiry?")) return;
+  try {
+    const res = await fetch(`/api/contact/messages/${encodeURIComponent(id)}`, {
+      method: "DELETE"
+    });
+    if (res.ok) {
+      showToast("Inquiry removed.");
+      await window.refreshInboxMessages();
+    } else {
+      showToast("Failed to delete inquiry.");
+    }
+  } catch (e) {
+    console.error("Delete failed:", e);
+    showToast("Error deleting message.");
+  }
+};
 
 // ---------------------------------------------------------------------------
 // 8. Clipboard Copy Utility with Toast

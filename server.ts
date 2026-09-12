@@ -63,7 +63,7 @@ const PROFILE_DATA = {
   email: "sachinkumar171201@gmail.com",
   phone: "+91-9840978758",
   github: "https://github.com/sachink1712",
-  linkedin: "https://linkedin.com/in/sachin",
+  linkedin: "https://www.linkedin.com/in/sachinkumar17",
   impact_metrics: [
     {
       value: "4h → 20m",
